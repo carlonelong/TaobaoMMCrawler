@@ -38,7 +38,7 @@ class Crawler(object):
             for page in xrange(1, 10):
                 print 'current page', page
                 model_url = self.album_prefix.format(model_id, page)
-                soup = bs(self.readHtml(model_url), 'html.parser')
+                soup = bs(self.readHtml(model_url).decode('gbk'), 'html.parser')
                 albums = soup.find_all('div', class_ = 'mm-photo-cell-middle')
                 if not albums:
                     break
