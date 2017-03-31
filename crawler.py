@@ -69,7 +69,7 @@ class Crawler(object):
             # tried to use des as names, however, it duplicates times. So i chose pic ids.
             names = re.findall(self.image_name_pattern, body)
             for idx, image in enumerate(images):
-                image = image.replace('290', '620')
+                image = image[:image.find('_290')]
                 with open(names[idx]+'.jpg', 'w') as img:
                     img.write(self.readHtml('http://'+image))
 
