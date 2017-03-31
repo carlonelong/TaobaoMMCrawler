@@ -1,7 +1,7 @@
 # encoding=utf-8
 import os
 import re
-import urllib
+import urllib.request as request
 import imghdr
 from bs4 import BeautifulSoup as bs
 
@@ -19,7 +19,7 @@ class Crawler(object):
         self.names= []
 
     def readHtml(self, html):
-        response = urllib.request.urlopen(html)
+        response = request.urlopen(html)
         content = response.read()
         charset = response.info().get_content_charset()
         if charset is not None:
@@ -74,9 +74,13 @@ class Crawler(object):
             # tried to use des as names, however, it duplicates times. So i chose pic ids.
             names = self.image_name_pattern.findall(body)
             for idx, image in enumerate(images):
-                image = image.replace('290', '620')
+                # image = image.replace('290', '620')
+                image = image[:image.find('_290')]
                 image_content = self.readHtml('http://'+image)
                 image_type = imghdr.what('guest what type of image it is', image_content)
+                if image_type is None:
+                    image_type = 'jpg'
+                print(len(image_content), image_type)
                 with open(names[idx]+'.'+image_type, 'wb') as img:
                     img.write(image_content)
 
